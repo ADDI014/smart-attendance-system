@@ -12,9 +12,46 @@ This project demonstrates **Machine Learning, Full-Stack Development, Microservi
 * 🗄️ **Backend API** built with Node.js + Express
 * 💾 **Attendance stored in MongoDB**
 * ⚡ **React Frontend Dashboard** (real-time updates)
-* 🐳 **Containerized with Docker** (future phase)
-* ☸️ **Deployable on Kubernetes** (future phase)
-* 🔄 **CI/CD using GitHub Actions** (future phase)
+* 🐳 **Containerized with Docker**
+* ☸️ **Deployable on Kubernetes**
+* 🔄 **CI/CD using GitHub Actions**
+
+---
+
+# 🆕 **NEW FEATURE: Liveness Detection (Anti-Spoofing)**
+
+To prevent users from cheating the system using **passport photos, printed photos, or mobile screens**, the project now includes **Liveness Detection**.
+Attendance is marked **only if a real human is detected**.
+
+### ✔ Blink Detection (EAR – Eye Aspect Ratio)
+
+* Detects natural blinking using facial landmarks
+* Fake images/screens do not blink
+* If EAR < **0.20**, blink is detected → **Real human**
+
+### ✔ Head Movement Detection (Micro nose movement)
+
+* Detects left/right micro head movements
+* Photos/screens remain perfectly still
+* If nose keypoints shift > **5px**, movement detected → **Real human**
+
+### ✔ Final Rule
+
+```
+If (blink detected OR head movement detected):
+      → Allow face recognition + save attendance
+Else:
+      → Return "Spoof Detected" (no attendance saved)
+```
+
+**Example Output when spoofing:**
+
+```json
+{
+  "name": "Spoof Detected",
+  "time": ""
+}
+```
 
 ---
 
@@ -90,94 +127,53 @@ attendance/
 
 ## 1️⃣ **Run Machine Learning Service (Flask API)**
 
-### Step 1 — Go to ML folder
-
 ```
 cd attendance/ml
-```
-
-### Step 2 — Install dependencies
-
-```
 pip install -r requirements.txt
-```
-
-### Step 3 — Encode faces
-
-```
 python encode_faces.py
-```
-
-### Step 4 — Start ML server
-
-```
 python app.py
 ```
 
-Flask will start on:
-
+Runs on:
 👉 [http://127.0.0.1:5000/detect](http://127.0.0.1:5000/detect)
 
 ---
 
 ## 2️⃣ **Run Backend (Node.js + MongoDB)**
 
-### Step 1 — Go to backend folder
-
 ```
 cd attendance/backend
-```
-
-### Step 2 — Install dependencies
-
-```
 npm install
 ```
 
-### Step 3 — Add `.env`
+Add `.env`:
 
 ```
 MONGO_URI=mongodb://localhost:27017/attendance
 PORT=8000
 ```
 
-### Step 4 — Start backend
+Start server:
 
 ```
 node src/server.js
 ```
 
-Backend will start at:
-
+Backend:
 👉 [http://localhost:8000/attendance](http://localhost:8000/attendance)
 
 ---
 
 ## 3️⃣ **Run Frontend (React Dashboard)**
 
-### Step 1 — Go to frontend folder
-
 ```
 cd attendance/fronted
-```
-
-### Step 2 — Install packages
-
-```
 npm install
-```
-
-### Step 3 — Start React app
-
-```
 npm start
 ```
 
-Frontend will open at:
-
+Runs on:
 👉 [http://localhost:3000](http://localhost:3000)
-
-You will see **live attendance updates** from MongoDB.
 
 ---
 
@@ -197,10 +193,11 @@ You will see **live attendance updates** from MongoDB.
 | GET    | `/attendance` | Fetch all attendance |
 
 ---
+
 # 🏆 **Author**
 
 **Alok Ranjan**
 Smart Attendance System — AI + ML + MERN + DevOps
 (Feel free to connect or fork the repo!)
 
-Just tell me!
+---
