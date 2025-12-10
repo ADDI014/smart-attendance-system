@@ -15,7 +15,7 @@ names = []
 
 try:
     for filename in os.listdir(KNOWN_FACES_DIR):
-        if filename.endswith(".jpg") or filename.endswith(".png"):
+        if filename.endswith(".jpg") or filename.endswith(".png") or filename.endswith(".jpeg"):
             try:
                 image = face_recognition.load_image_file(f"{KNOWN_FACES_DIR}/{filename}")
                 face_encodings = face_recognition.face_encodings(image)

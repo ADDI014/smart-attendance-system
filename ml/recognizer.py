@@ -10,14 +10,8 @@ BACKEND_URL = "http://localhost:8000/attendance"
 with open("encodings.pkl", "rb") as f:
     data = pickle.load(f)
 
-def recognize_face():
-    cap = cv2.VideoCapture(0)
-    ret, frame = cap.read()
-    cap.release()
-
-    if not ret:
-        return {"name": "Camera Error", "time": ""}
-
+def recognize_face(frame):
+    # Use the frame passed from app.py
     rgb_frame = frame[:, :, ::-1]
 
     locations = face_recognition.face_locations(rgb_frame)
