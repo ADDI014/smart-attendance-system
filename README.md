@@ -9,6 +9,11 @@ This project demonstrates **Machine Learning, Full-Stack Development, Microservi
 
 * 🎯 **Real-time Face Recognition** using Python + OpenCV + face_recognition
 * 🤖 **ML Microservice** exposed as a Flask REST API
+* 🔐 **Liveness Detection (Anti-Spoofing)**
+
+  * Blink detection (EAR algorithm)
+  * Micro head movement detection
+  * Prevents cheating via photos/screens
 * 🗄️ **Backend API** built with Node.js + Express
 * 💾 **Attendance stored in MongoDB**
 * ⚡ **React Frontend Dashboard** (real-time updates)
@@ -20,22 +25,29 @@ This project demonstrates **Machine Learning, Full-Stack Development, Microservi
 
 # 🆕 **NEW FEATURE: Liveness Detection (Anti-Spoofing)**
 
-To prevent users from cheating the system using **passport photos, printed photos, or mobile screens**, the project now includes **Liveness Detection**.
-Attendance is marked **only if a real human is detected**.
+To prevent users from cheating the system using **passport photos, printed photos, or mobile screens**, the ML model now includes **Liveness Detection**.
 
-### ✔ Blink Detection (EAR – Eye Aspect Ratio)
+Attendance is stored **ONLY if a real human is detected**.
+
+---
+
+## ✔ Blink Detection (EAR – Eye Aspect Ratio)
 
 * Detects natural blinking using facial landmarks
 * Fake images/screens do not blink
-* If EAR < **0.20**, blink is detected → **Real human**
+* If EAR < **0.20**, blink detected → **Real human**
 
-### ✔ Head Movement Detection (Micro nose movement)
+---
 
-* Detects left/right micro head movements
+## ✔ Head Movement Detection (Micro nose movement)
+
+* Detects left/right micro head movement
 * Photos/screens remain perfectly still
 * If nose keypoints shift > **5px**, movement detected → **Real human**
 
-### ✔ Final Rule
+---
+
+## ✔ Final Rule
 
 ```
 If (blink detected OR head movement detected):
@@ -44,18 +56,9 @@ Else:
       → Return "Spoof Detected" (no attendance saved)
 ```
 
-**Example Output when spoofing:**
-
-```json
-{
-  "name": "Spoof Detected",
-  "time": ""
-}
-```
-
 ---
 
-# 🧠 **System Architecture**
+# 🧠 **System Architecture (Your Original Style)**
 
 ```
 +---------------------+        +----------------------+        +---------------------+
@@ -86,9 +89,11 @@ attendance/
 │
 ├── ml/                    → Machine Learning microservice
 │   ├── known_faces/
-│   ├── app.py             → Flask API
-│   ├── recognizer.py      → Face detection & encoding
-│   ├── encode_faces.py
+│   ├── encodings.pkl
+│   ├── app.py             → Flask API + Liveness + Recognition
+│   ├── recognizer.py      → Face matching + backend communication
+│   ├── liveness.py        → Blink + head-movement detection
+│   ├── encode_faces.py    → Converts images → encodings.pkl
 │   └── requirements.txt
 │
 ├── fronted/ (or frontend) → React.js dashboard
@@ -125,7 +130,7 @@ attendance/
 
 # 🔥 **How to Run the Project**
 
-## 1️⃣ **Run Machine Learning Service (Flask API)**
+## 1️⃣ Run Machine Learning Service (Flask API)
 
 ```
 cd attendance/ml
@@ -134,12 +139,12 @@ python encode_faces.py
 python app.py
 ```
 
-Runs on:
+ML runs on
 👉 [http://127.0.0.1:5000/detect](http://127.0.0.1:5000/detect)
 
 ---
 
-## 2️⃣ **Run Backend (Node.js + MongoDB)**
+## 2️⃣ Run Backend (Node.js + MongoDB)
 
 ```
 cd attendance/backend
@@ -153,18 +158,15 @@ MONGO_URI=mongodb://localhost:27017/attendance
 PORT=8000
 ```
 
-Start server:
+Start backend:
 
 ```
 node src/server.js
 ```
 
-Backend:
-👉 [http://localhost:8000/attendance](http://localhost:8000/attendance)
-
 ---
 
-## 3️⃣ **Run Frontend (React Dashboard)**
+## 3️⃣ Run Frontend
 
 ```
 cd attendance/fronted
@@ -179,18 +181,18 @@ Runs on:
 
 # 🔗 **API Endpoints**
 
-### **ML Service**
+### ML Service
 
-| Method | Endpoint  | Description                 |
-| ------ | --------- | --------------------------- |
-| GET    | `/detect` | Detects face & returns JSON |
+| Method | Endpoint  | Description                           |
+| ------ | --------- | ------------------------------------- |
+| GET    | `/detect` | Face recognition + liveness detection |
 
-### **Backend API**
+### Backend Service
 
-| Method | Endpoint      | Description          |
-| ------ | ------------- | -------------------- |
-| POST   | `/attendance` | Save attendance      |
-| GET    | `/attendance` | Fetch all attendance |
+| Method | Endpoint      | Description      |
+| ------ | ------------- | ---------------- |
+| POST   | `/attendance` | Save attendance  |
+| GET    | `/attendance` | Fetch attendance |
 
 ---
 
@@ -198,6 +200,7 @@ Runs on:
 
 **Alok Ranjan**
 Smart Attendance System — AI + ML + MERN + DevOps
-(Feel free to connect or fork the repo!)
 
 ---
+
+Just say **"Make README premium"**.
