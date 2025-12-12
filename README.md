@@ -58,7 +58,7 @@ Else:
 
 ---
 
-# 🧠 **System Architecture (Your Original Style)**
+# 🧠 **System Architecture **
 
 ```
 +---------------------+        +----------------------+        +---------------------+
