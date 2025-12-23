@@ -6,8 +6,7 @@ const Navbar = () => {
         <h1 className='text-xl font-bold'>Smart Attendance System</h1>
         <span className='text-sm text-slate-300'>AI Face Recognition + Liveness</span>
     </header>
-
-  )
-}
+  );
+};
 
 export default Navbar
